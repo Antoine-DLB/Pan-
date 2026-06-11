@@ -1,0 +1,19 @@
+# Production compose: single container behind Traefik (HTTPS + wss://).
+# Requires an external `traefik` network and a DOMAIN variable in .env.
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.farwest.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.farwest.entrypoints=websecure"
+      - "traefik.http.routers.farwest.tls=true"
+      - "traefik.http.routers.farwest.tls.certresolver=letsencrypt"
+      - "traefik.http.services.farwest.loadbalancer.server.port=8000"
+
+networks:
+  traefik:
+    external: true
