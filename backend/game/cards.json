@@ -1,0 +1,266 @@
+{
+  "comment": "Card definitions. Display names are original creations and can be changed freely. Each copy carries a suit/value used for 'draw!' checks (barrel, jail, dynamite). 80 cards total.",
+  "cards": [
+    {
+      "id": "shot",
+      "name": "Tir !",
+      "type": "brown",
+      "effect": "Inflige 1 dégât à une cible à portée. La cible peut jouer Esquive pour annuler.",
+      "copies": [
+        {"suit": "spades", "value": "A"},
+        {"suit": "diamonds", "value": "2"},
+        {"suit": "diamonds", "value": "3"},
+        {"suit": "diamonds", "value": "4"},
+        {"suit": "diamonds", "value": "5"},
+        {"suit": "diamonds", "value": "6"},
+        {"suit": "diamonds", "value": "7"},
+        {"suit": "diamonds", "value": "8"},
+        {"suit": "diamonds", "value": "9"},
+        {"suit": "diamonds", "value": "10"},
+        {"suit": "diamonds", "value": "J"},
+        {"suit": "diamonds", "value": "Q"},
+        {"suit": "diamonds", "value": "K"},
+        {"suit": "diamonds", "value": "A"},
+        {"suit": "clubs", "value": "2"},
+        {"suit": "clubs", "value": "3"},
+        {"suit": "clubs", "value": "4"},
+        {"suit": "clubs", "value": "5"},
+        {"suit": "clubs", "value": "6"},
+        {"suit": "clubs", "value": "7"},
+        {"suit": "clubs", "value": "8"},
+        {"suit": "clubs", "value": "9"},
+        {"suit": "hearts", "value": "Q"},
+        {"suit": "hearts", "value": "K"},
+        {"suit": "hearts", "value": "A"}
+      ]
+    },
+    {
+      "id": "dodge",
+      "name": "Esquive",
+      "type": "brown",
+      "effect": "Annule un Tir. Jouable uniquement en réaction.",
+      "copies": [
+        {"suit": "spades", "value": "2"},
+        {"suit": "spades", "value": "3"},
+        {"suit": "spades", "value": "4"},
+        {"suit": "spades", "value": "5"},
+        {"suit": "spades", "value": "6"},
+        {"suit": "spades", "value": "7"},
+        {"suit": "spades", "value": "8"},
+        {"suit": "clubs", "value": "10"},
+        {"suit": "clubs", "value": "J"},
+        {"suit": "clubs", "value": "Q"},
+        {"suit": "clubs", "value": "K"},
+        {"suit": "clubs", "value": "A"}
+      ]
+    },
+    {
+      "id": "beer",
+      "name": "Gnôle",
+      "type": "brown",
+      "effect": "Récupère 1 PV (max PV de départ). Sans effet à 2 joueurs restants. Peut annuler le dégât fatal.",
+      "copies": [
+        {"suit": "hearts", "value": "6"},
+        {"suit": "hearts", "value": "7"},
+        {"suit": "hearts", "value": "8"},
+        {"suit": "hearts", "value": "9"},
+        {"suit": "hearts", "value": "10"},
+        {"suit": "hearts", "value": "J"}
+      ]
+    },
+    {
+      "id": "panic",
+      "name": "Vol à la tire",
+      "type": "brown",
+      "effect": "Prend une carte (main ou en jeu) à un joueur à distance 1.",
+      "copies": [
+        {"suit": "hearts", "value": "J"},
+        {"suit": "hearts", "value": "Q"},
+        {"suit": "hearts", "value": "A"},
+        {"suit": "diamonds", "value": "8"}
+      ]
+    },
+    {
+      "id": "cat_balou",
+      "name": "Sabotage",
+      "type": "brown",
+      "effect": "Force un joueur (n'importe quelle distance) à défausser une carte.",
+      "copies": [
+        {"suit": "hearts", "value": "K"},
+        {"suit": "diamonds", "value": "9"},
+        {"suit": "diamonds", "value": "10"},
+        {"suit": "diamonds", "value": "J"}
+      ]
+    },
+    {
+      "id": "stagecoach",
+      "name": "Diligence",
+      "type": "brown",
+      "effect": "Pioche 2 cartes.",
+      "copies": [
+        {"suit": "spades", "value": "9"},
+        {"suit": "spades", "value": "9"}
+      ]
+    },
+    {
+      "id": "wells_fargo",
+      "name": "Convoi d'or",
+      "type": "brown",
+      "effect": "Pioche 3 cartes.",
+      "copies": [
+        {"suit": "hearts", "value": "3"}
+      ]
+    },
+    {
+      "id": "gatling",
+      "name": "Mitraille",
+      "type": "brown",
+      "effect": "Un Tir contre tous les autres joueurs (ne compte pas dans la limite de 1 Tir/tour).",
+      "copies": [
+        {"suit": "hearts", "value": "10"}
+      ]
+    },
+    {
+      "id": "indians",
+      "name": "Embuscade",
+      "type": "brown",
+      "effect": "Tous les autres joueurs défaussent un Tir ou perdent 1 PV.",
+      "copies": [
+        {"suit": "diamonds", "value": "K"},
+        {"suit": "diamonds", "value": "A"}
+      ]
+    },
+    {
+      "id": "duel",
+      "name": "Duel",
+      "type": "brown",
+      "effect": "La cible et l'attaquant défaussent alternativement des Tirs (la cible commence). Le premier qui ne peut pas perd 1 PV.",
+      "copies": [
+        {"suit": "diamonds", "value": "Q"},
+        {"suit": "spades", "value": "J"},
+        {"suit": "clubs", "value": "8"}
+      ]
+    },
+    {
+      "id": "general_store",
+      "name": "Bazar",
+      "type": "brown",
+      "effect": "Révéler autant de cartes que de joueurs en vie ; chacun en choisit une, en commençant par le joueur actif.",
+      "copies": [
+        {"suit": "clubs", "value": "9"},
+        {"suit": "spades", "value": "Q"}
+      ]
+    },
+    {
+      "id": "saloon",
+      "name": "Tournée générale",
+      "type": "brown",
+      "effect": "Tous les joueurs en vie récupèrent 1 PV.",
+      "copies": [
+        {"suit": "hearts", "value": "5"}
+      ]
+    },
+    {
+      "id": "volcanic",
+      "name": "Pétoire rapide",
+      "type": "blue",
+      "range": 1,
+      "effect": "Arme portée 1, mais Tirs illimités par tour.",
+      "copies": [
+        {"suit": "spades", "value": "10"},
+        {"suit": "clubs", "value": "10"}
+      ]
+    },
+    {
+      "id": "schofield",
+      "name": "Revolver",
+      "type": "blue",
+      "range": 2,
+      "effect": "Arme portée 2.",
+      "copies": [
+        {"suit": "clubs", "value": "J"},
+        {"suit": "clubs", "value": "Q"},
+        {"suit": "spades", "value": "K"}
+      ]
+    },
+    {
+      "id": "remington",
+      "name": "Carabine courte",
+      "type": "blue",
+      "range": 3,
+      "effect": "Arme portée 3.",
+      "copies": [
+        {"suit": "clubs", "value": "K"}
+      ]
+    },
+    {
+      "id": "rev_carabine",
+      "name": "Carabine longue",
+      "type": "blue",
+      "range": 4,
+      "effect": "Arme portée 4.",
+      "copies": [
+        {"suit": "clubs", "value": "A"}
+      ]
+    },
+    {
+      "id": "winchester",
+      "name": "Fusil",
+      "type": "blue",
+      "range": 5,
+      "effect": "Arme portée 5.",
+      "copies": [
+        {"suit": "spades", "value": "8"}
+      ]
+    },
+    {
+      "id": "mustang",
+      "name": "Cheval",
+      "type": "blue",
+      "effect": "Les autres vous voient à distance +1.",
+      "copies": [
+        {"suit": "hearts", "value": "8"},
+        {"suit": "hearts", "value": "9"}
+      ]
+    },
+    {
+      "id": "scope",
+      "name": "Longue-vue",
+      "type": "blue",
+      "effect": "Vous voyez les autres à distance -1.",
+      "copies": [
+        {"suit": "spades", "value": "A"}
+      ]
+    },
+    {
+      "id": "barrel",
+      "name": "Tonneau",
+      "type": "blue",
+      "effect": "Quand visé par un Tir : dégainer. Si Cœur, le Tir est annulé.",
+      "copies": [
+        {"suit": "spades", "value": "Q"},
+        {"suit": "spades", "value": "K"}
+      ]
+    },
+    {
+      "id": "jail",
+      "name": "Prison",
+      "type": "blue",
+      "effect": "Se pose devant un autre joueur (pas le Shérif). À son tour il dégaine : Cœur, il joue normalement, sinon il passe son tour. La Prison est défaussée dans les deux cas.",
+      "copies": [
+        {"suit": "spades", "value": "J"},
+        {"suit": "spades", "value": "10"},
+        {"suit": "hearts", "value": "4"}
+      ]
+    },
+    {
+      "id": "dynamite",
+      "name": "Dynamite",
+      "type": "blue",
+      "effect": "À son tour, avant tout : dégainer. Si 2-9 de Pique, explose : 3 dégâts et défaussée. Sinon passe au joueur suivant.",
+      "copies": [
+        {"suit": "hearts", "value": "2"}
+      ]
+    }
+  ]
+}
