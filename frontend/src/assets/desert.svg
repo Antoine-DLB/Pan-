@@ -1,40 +1,107 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1200" preserveAspectRatio="xMidYMax slice">
   <defs>
     <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
-      <stop offset="0" stop-color="#26120c"/>
-      <stop offset="0.5" stop-color="#5c2a16"/>
-      <stop offset="0.78" stop-color="#a85423"/>
-      <stop offset="1" stop-color="#d98a3d"/>
+      <stop offset="0" stop-color="#1d0f0a"/>
+      <stop offset="0.35" stop-color="#4a2010"/>
+      <stop offset="0.62" stop-color="#8c3f1a"/>
+      <stop offset="0.78" stop-color="#c66a28"/>
+      <stop offset="0.88" stop-color="#e69440"/>
     </linearGradient>
     <linearGradient id="ground" x1="0" x2="0" y1="0" y2="1">
-      <stop offset="0" stop-color="#7c4a26"/>
-      <stop offset="1" stop-color="#311d0e"/>
+      <stop offset="0" stop-color="#8a5228"/>
+      <stop offset="0.4" stop-color="#5e3417"/>
+      <stop offset="1" stop-color="#2b180c"/>
     </linearGradient>
   </defs>
-  <rect width="800" height="860" fill="url(#sky)"/>
-  <circle cx="400" cy="770" r="115" fill="#f2b04a" opacity="0.9"/>
-  <circle cx="400" cy="770" r="160" fill="#f2b04a" opacity="0.18"/>
-  <!-- distant mesas -->
-  <path d="M0 800 h90 l20 -70 h60 l18 70 h140 v60 H0 z" fill="#4a2413" opacity="0.9"/>
-  <path d="M520 805 l40 -90 h26 l36 90 h130 v55 H520 z" fill="#421f10" opacity="0.9"/>
-  <!-- ground dunes -->
-  <path d="M0 840 q200 -50 420 -10 q200 35 380 -8 V1200 H0 z" fill="url(#ground)"/>
-  <path d="M0 980 q240 -60 470 -16 q190 33 330 -10 V1200 H0 z" fill="#2e1a0d" opacity="0.6"/>
-  <!-- cactus, left -->
-  <g fill="#1d2a14" opacity="0.9">
-    <rect x="90" y="880" width="26" height="150" rx="13"/>
-    <rect x="56" y="900" width="20" height="62" rx="10"/>
-    <rect x="56" y="942" width="44" height="20" rx="10"/>
-    <rect x="124" y="922" width="20" height="52" rx="10"/>
-    <rect x="110" y="954" width="34" height="20" rx="10"/>
+
+  <rect width="800" height="900" fill="url(#sky)"/>
+
+  <!-- stars -->
+  <g fill="#f3e7d3">
+    <circle cx="80" cy="80" r="2.4" opacity="0.8"/>
+    <circle cx="210" cy="150" r="1.7" opacity="0.6"/>
+    <circle cx="330" cy="60" r="2" opacity="0.7"/>
+    <circle cx="470" cy="120" r="1.5" opacity="0.5"/>
+    <circle cx="600" cy="70" r="2.4" opacity="0.8"/>
+    <circle cx="710" cy="170" r="1.7" opacity="0.6"/>
+    <circle cx="150" cy="230" r="1.5" opacity="0.45"/>
+    <circle cx="650" cy="260" r="1.5" opacity="0.4"/>
+    <circle cx="390" cy="200" r="1.3" opacity="0.4"/>
+    <circle cx="540" cy="300" r="1.3" opacity="0.3"/>
   </g>
-  <!-- cactus, right -->
-  <g fill="#22301a" opacity="0.85">
-    <rect x="660" y="1006" width="20" height="104" rx="10"/>
-    <rect x="688" y="1028" width="16" height="42" rx="8"/>
-    <rect x="676" y="1054" width="28" height="16" rx="8"/>
+
+  <!-- banded retro sun -->
+  <g>
+    <circle cx="400" cy="700" r="150" fill="#f2b04a" opacity="0.16"/>
+    <circle cx="400" cy="700" r="118" fill="#f2b04a"/>
+    <circle cx="400" cy="700" r="118" fill="#f8c668" opacity="0.45"/>
+    <g fill="#c66a28">
+      <rect x="270" y="722" width="260" height="9"/>
+      <rect x="276" y="748" width="248" height="13"/>
+      <rect x="290" y="780" width="220" height="17"/>
+    </g>
   </g>
-  <!-- shadows on the sand -->
-  <ellipse cx="520" cy="1120" rx="34" ry="12" fill="#241408" opacity="0.7"/>
-  <ellipse cx="260" cy="1160" rx="46" ry="14" fill="#241408" opacity="0.6"/>
+
+  <!-- birds -->
+  <g fill="none" stroke="#241208" stroke-width="4" stroke-linecap="round">
+    <path d="M250 420 q12 -12 24 0 q12 -12 24 0"/>
+    <path d="M560 380 q9 -9 18 0 q9 -9 18 0"/>
+  </g>
+
+  <!-- far mesa layer -->
+  <g fill="#5a2b14">
+    <path d="M0 760 h70 q6 -60 16 -62 h70 q10 2 16 62 h60 v80 H0 z"/>
+    <path d="M470 770 h60 q5 -48 13 -50 h56 q8 2 13 50 h120 q5 -40 11 -42 h40 v110 H470 z"/>
+  </g>
+  <!-- near mesa layer -->
+  <g fill="#46210f">
+    <path d="M150 820 h80 q7 -70 18 -72 h54 q11 2 18 72 h90 v60 H150 z"/>
+    <path d="M620 830 q6 -56 15 -58 h48 q9 2 15 58 h102 v60 H620 z"/>
+  </g>
+
+  <!-- dunes -->
+  <path d="M0 850 q200 -55 420 -12 q210 38 380 -10 V1200 H0 z" fill="url(#ground)"/>
+  <path d="M0 850 q200 -55 420 -12 q210 38 380 -10 l0 14 q-170 46 -380 9 q-218 -42 -420 13 z" fill="#c98a4a" opacity="0.35"/>
+  <path d="M0 1000 q240 -62 480 -14 q180 33 320 -12 V1200 H0 z" fill="#241408" opacity="0.55"/>
+  <path d="M0 1000 q240 -62 480 -14 q180 33 320 -12 l0 13 q-138 43 -320 11 q-238 -47 -480 14 z" fill="#a06b3d" opacity="0.25"/>
+
+  <!-- big saguaro, left -->
+  <g>
+    <g fill="#33491f">
+      <rect x="84" y="836" width="34" height="194" rx="17"/>
+      <rect x="42" y="868" width="26" height="76" rx="13"/>
+      <rect x="42" y="922" width="58" height="26" rx="13"/>
+      <rect x="128" y="894" width="26" height="62" rx="13"/>
+      <rect x="112" y="934" width="42" height="26" rx="13"/>
+    </g>
+    <g stroke="#243516" stroke-width="4" stroke-linecap="round" fill="none">
+      <path d="M94 850 V1020"/>
+      <path d="M108 850 V1020"/>
+      <path d="M54 880 V930"/>
+      <path d="M140 906 V944"/>
+    </g>
+  </g>
+
+  <!-- small saguaro, right -->
+  <g fill="#2c3f1c">
+    <rect x="664" y="1010" width="24" height="116" rx="12"/>
+    <rect x="694" y="1034" width="18" height="48" rx="9"/>
+    <rect x="682" y="1062" width="30" height="18" rx="9"/>
+    <rect x="640" y="1052" width="18" height="40" rx="9"/>
+    <rect x="646" y="1074" width="30" height="18" rx="9"/>
+  </g>
+
+  <!-- tumbleweed -->
+  <g fill="none" stroke="#7a5530" stroke-width="3" opacity="0.85">
+    <circle cx="510" cy="1086" r="26"/>
+    <circle cx="510" cy="1086" r="16"/>
+    <path d="M492 1068 l36 36 M528 1068 l-36 36 M484 1086 h52 M510 1060 v52"/>
+  </g>
+
+  <!-- foreground rocks -->
+  <g fill="#1f1107">
+    <ellipse cx="250" cy="1168" rx="46" ry="15"/>
+    <ellipse cx="296" cy="1176" rx="24" ry="9"/>
+    <ellipse cx="120" cy="1190" rx="34" ry="11"/>
+  </g>
 </svg>

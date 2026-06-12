@@ -1,6 +1,6 @@
 import { SUIT_SYMBOLS } from '../constants'
 import useLongPress from '../hooks/useLongPress'
-import CardArt from './cardArt'
+import { CARD_ART } from './cardArt'
 
 export default function Card({ card, small, selected, disabled, onClick, onPeek }) {
   const press = useLongPress(
@@ -27,7 +27,14 @@ export default function Card({ card, small, selected, disabled, onClick, onPeek 
   return (
     <div className={classes} onClick={handleClick} {...press.handlers}>
       <div className="card-name">{card.name}</div>
-      <CardArt cardId={card.id} />
+      {CARD_ART[card.id] && (
+        <img
+          className="card-art"
+          src={CARD_ART[card.id]}
+          alt=""
+          draggable="false"
+        />
+      )}
       <div className="card-bottom">
         {card.range != null && <span className="card-range">Portée {card.range}</span>}
         <span className={`card-corner ${red ? 'red' : 'black'}`}>
