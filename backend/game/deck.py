@@ -28,6 +28,7 @@ def load_cards(path: Optional[Path] = None) -> list[Card]:
                     suit=Suit(copy["suit"]),
                     value=copy["value"],
                     range=definition.get("range"),
+                    effect=definition.get("effect", ""),
                 )
             )
             uid += 1

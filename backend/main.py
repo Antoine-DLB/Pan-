@@ -63,9 +63,13 @@ async def _broadcast_lobby(room: GameRoom) -> None:
 async def _broadcast_state(room: GameRoom) -> None:
     if room.engine is None:
         return
+    events = room.engine.take_events()
     for player_id, ws in list(connections.get(room.code, {}).items()):
         view = room.engine.view_for(player_id)
-        await _send(ws, {"type": "state", "code": room.code, "state": view})
+        await _send(
+            ws,
+            {"type": "state", "code": room.code, "state": view, "events": events},
+        )
 
 
 async def _attach(ws: WebSocket, room: GameRoom, seat: Seat) -> None:

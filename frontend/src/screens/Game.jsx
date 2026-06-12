@@ -3,14 +3,17 @@ import Card from '../components/Card'
 import GameOver from '../components/GameOver'
 import Hand from '../components/Hand'
 import HealthBar from '../components/HealthBar'
-import PlayerArc from '../components/PlayerArc'
+import PlayerArc, { MiniCard } from '../components/PlayerArc'
 import ReactionModal from '../components/ReactionModal'
+import ShotAnimation from '../components/ShotAnimation'
 import { ROLE_LABELS, TARGET_MODES } from '../constants'
 
-export default function Game({ state, send, reset }) {
-  const [selected, setSelected] = useState(null) // card waiting for a target
+export default function Game({ state, events, send, reset }) {
+  const [selected, setSelected] = useState(null) // card in preview/confirm
   const [discardSel, setDiscardSel] = useState([])
   const [chooser, setChooser] = useState(null) // steal: pick hand vs table card
+  const [peek, setPeek] = useState(null) // long-pressed card description
+  const [bang, setBang] = useState(null) // shot animation
 
   const me = state.you
   const pending = state.pending
@@ -30,10 +33,28 @@ export default function Game({ state, send, reset }) {
     setSelected(null)
     setDiscardSel([])
     setChooser(null)
+    setPeek(null)
   }, [state.phase, state.turn_player_id, pending?.type, pending?.responder_id])
 
+  // shot events -> colt animation
+  useEffect(() => {
+    if (!events) return undefined
+    const shot = events.list.find((e) => e.type === 'shot')
+    if (!shot) return undefined
+    setBang({
+      key: events.seq,
+      gatling: shot.gatling,
+      shooter: nameOf(shot.source_id),
+    })
+    const timer = setTimeout(() => setBang(null), 1000)
+    return () => clearTimeout(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [events])
+
+  const needsTarget = selected ? Boolean(TARGET_MODES[selected.id]) : false
+
   const eligibleIds = useMemo(() => {
-    if (!selected) return new Set()
+    if (!selected || !needsTarget) return new Set()
     const mode = TARGET_MODES[selected.id]
     const set = new Set()
     for (const p of opponents) {
@@ -48,7 +69,7 @@ export default function Game({ state, send, reset }) {
       set.add(p.id)
     }
     return set
-  }, [selected, opponents])
+  }, [selected, needsTarget, opponents])
 
   function isPlayable(card) {
     if (finished || !me.alive) return false
@@ -69,15 +90,15 @@ export default function Game({ state, send, reset }) {
       return
     }
     if (!myTurn || state.phase !== 'play' || pending) return
-    if (selected?.uid === card.uid) {
-      setSelected(null)
-      return
-    }
-    if (TARGET_MODES[card.id]) {
-      setSelected(card)
-      return
-    }
-    send({ action: 'play_card', card: card.uid })
+    // first tap selects (preview + description), confirmation happens in the
+    // play panel or by tapping a target — never play a card on a single tap
+    setSelected(selected?.uid === card.uid ? null : card)
+  }
+
+  function confirmPlay() {
+    if (!selected) return
+    send({ action: 'play_card', card: selected.uid })
+    setSelected(null)
   }
 
   function tapTarget(target) {
@@ -107,7 +128,9 @@ export default function Game({ state, send, reset }) {
         : `Réaction de ${nameOf(pending.responder_id)}…`
   } else if (myTurn) {
     banner = selected
-      ? `Choisis une cible pour « ${selected.name} »`
+      ? needsTarget
+        ? `Choisis une cible pour « ${selected.name} »`
+        : `Confirme pour jouer « ${selected.name} »`
       : {
           draw: 'À toi : pioche 2 cartes',
           play: 'À toi de jouer !',
@@ -121,9 +144,10 @@ export default function Game({ state, send, reset }) {
     <div className="game">
       <PlayerArc
         players={opponents}
-        targeting={!!selected}
+        targeting={needsTarget}
         eligibleIds={eligibleIds}
         onTarget={tapTarget}
+        onPeek={setPeek}
       />
 
       <div className="board">
@@ -133,7 +157,9 @@ export default function Game({ state, send, reset }) {
             <br />
             {state.deck_count}
           </div>
-          {state.discard_top && <Card card={state.discard_top} small disabled />}
+          {state.discard_top && (
+            <Card card={state.discard_top} small disabled onPeek={setPeek} />
+          )}
         </div>
         <div className="turn-banner">{banner}</div>
         <div className="log-line">{state.log[state.log.length - 1]}</div>
@@ -157,15 +183,28 @@ export default function Game({ state, send, reset }) {
               Défausser ({discardSel.length}/{overLimit})
             </button>
           )}
-          {selected && (
-            <button className="btn link" onClick={() => setSelected(null)}>
-              Annuler
-            </button>
-          )}
         </div>
       </div>
 
       <div className="me">
+        {selected && (
+          <div className="play-panel">
+            <div className="play-desc">
+              <strong>{selected.name}</strong>
+              <span>{selected.effect}</span>
+            </div>
+            <div className="actions">
+              {!needsTarget && (
+                <button className="btn primary" onClick={confirmPlay}>
+                  Jouer
+                </button>
+              )}
+              <button className="btn link" onClick={() => setSelected(null)}>
+                Annuler
+              </button>
+            </div>
+          </div>
+        )}
         <div className="status-row">
           <span className="role-badge">{ROLE_LABELS[me.role]}</span>
           {me.alive ? (
@@ -178,9 +217,7 @@ export default function Game({ state, send, reset }) {
         {me.table.length > 0 && (
           <div className="mini-cards">
             {me.table.map((c) => (
-              <span key={c.uid} className="mini-card">
-                {c.name}
-              </span>
+              <MiniCard key={c.uid} card={c} onPeek={setPeek} />
             ))}
           </div>
         )}
@@ -189,8 +226,17 @@ export default function Game({ state, send, reset }) {
           selectedUids={selectedUids}
           isPlayable={isPlayable}
           onTap={tapCard}
+          onPeek={setPeek}
         />
       </div>
+
+      {peek && (
+        <div className="peek">
+          <strong>{peek.name}</strong>
+          {peek.range != null && <span className="muted"> · portée {peek.range}</span>}
+          <p>{peek.effect}</p>
+        </div>
+      )}
 
       {chooser && (
         <div className="modal-backdrop" onClick={() => setChooser(null)}>
@@ -220,6 +266,7 @@ export default function Game({ state, send, reset }) {
                   key={c.uid}
                   card={c}
                   small
+                  onPeek={setPeek}
                   onClick={() => {
                     send({
                       action: 'play_card',
@@ -239,8 +286,16 @@ export default function Game({ state, send, reset }) {
         </div>
       )}
 
+      {bang && (
+        <ShotAnimation
+          key={bang.key}
+          gatling={bang.gatling}
+          shooterName={bang.shooter}
+        />
+      )}
+
       {pending && me.alive && !finished && (
-        <ReactionModal state={state} send={send} />
+        <ReactionModal state={state} send={send} onPeek={setPeek} />
       )}
       {finished && <GameOver state={state} reset={reset} />}
     </div>

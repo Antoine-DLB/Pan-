@@ -55,6 +55,9 @@ class GameEngine:
         self.winning_team: Optional[str] = None
         self.winners: list[str] = []
         self.log: list[str] = []
+        # transient structured events (animations, sounds...) drained by the
+        # network layer after each action via take_events()
+        self.events: list[dict] = []
         self._setup()
 
     # ------------------------------------------------------------------ setup
@@ -92,6 +95,14 @@ class GameEngine:
     def _log(self, message: str) -> None:
         self.log.append(message)
         del self.log[:-50]
+
+    def _emit(self, event_type: str, **data) -> None:
+        self.events.append({"type": event_type, **data})
+
+    def take_events(self) -> list[dict]:
+        """Return and clear events accumulated since the last call."""
+        events, self.events = self.events, []
+        return events
 
     def distance(self, attacker: Player, target: Player) -> int:
         alive = self.alive_players()
@@ -260,6 +271,7 @@ class GameEngine:
             self._discard_from_hand(player, card)
             self.shots_played += 1
             self._log(f"{player.name} tire sur {target.name} !")
+            self._emit("shot", source_id=player.id, target_ids=[target.id], gatling=False)
             self._push_shot(player, [target], gatling=False)
         elif cid == "dodge":
             raise GameError("L'Esquive ne se joue qu'en réaction à un Tir.")
@@ -302,6 +314,12 @@ class GameEngine:
             self._discard_from_hand(player, card)
             targets = self._others_in_order(player)
             self._log(f"{player.name} arrose tout le monde à la Mitraille !")
+            self._emit(
+                "shot",
+                source_id=player.id,
+                target_ids=[t.id for t in targets],
+                gatling=True,
+            )
             self._push_shot(player, targets, gatling=True)
         elif cid == "indians":
             self._discard_from_hand(player, card)
@@ -542,6 +560,7 @@ class GameEngine:
 
     def _apply_damage(self, target: Player, amount: int, source: Optional[Player], ctx: Optional[str] = None) -> None:
         target.hp -= amount
+        self._emit("hit", target_id=target.id, amount=amount)
         if target.hp <= 0:
             self.pending.append(
                 Pending(
@@ -578,6 +597,7 @@ class GameEngine:
         for card in list(player.table):
             self._discard_from_table(player, card)
         self._log(f"{player.name} est éliminé ! C'était : {ROLE_LABELS[player.role]}.")
+        self._emit("death", player_id=player.id, role=player.role.value)
         if source and source is not player and source.alive:
             if player.role == Role.OUTLAW:
                 source.hand.extend(self.deck.draw_many(OUTLAW_KILL_REWARD))

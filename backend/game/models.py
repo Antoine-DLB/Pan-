@@ -64,6 +64,7 @@ class Card:
     suit: Suit
     value: str          # "2".."10", "J", "Q", "K", "A"
     range: Optional[int] = None  # weapon range, only for weapon cards
+    effect: str = ""    # rules text shown to players, from cards.json
 
     @property
     def is_weapon(self) -> bool:
@@ -78,6 +79,7 @@ class Card:
             "suit": self.suit.value,
             "value": self.value,
             "range": self.range,
+            "effect": self.effect,
         }
 
 
