@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-const TOKEN_KEY = 'fws_token'
+// Session tokens are kept in localStorage so a page reload rejoins the game.
+// For testing several players on one device, a "?p=2" query param gives each
+// tab its own token slot.
+const SLOT = new URLSearchParams(window.location.search).get('p')
+const TOKEN_KEY = SLOT ? `fws_token_${SLOT}` : 'fws_token'
 
 // Single WebSocket connection to the server: auto-reconnects with exponential
 // backoff and resumes the session with the stored token after a page reload.
