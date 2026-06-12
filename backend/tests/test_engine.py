@@ -755,3 +755,43 @@ def test_views_never_leak_hidden_info():
             assert "hand" not in entry
             if other is not viewer and other.role != Role.SHERIFF:
                 assert entry["role"] is None
+
+
+# ----------------------------------------------------------------- events
+
+def test_shot_emits_event_and_effect_is_exposed():
+    game = make_game(4)
+    shooter = game.turn_player
+    target = neighbor(game, shooter)
+    start_play(game)
+    game.take_events()  # drop setup noise
+    give(game, shooter, "shot")
+    clear_hand(game, target)
+    card = next(c for c in shooter.hand if c.card_id == "shot")
+    assert "dégât" in card.to_dict()["effect"]
+    game.play_card(shooter.id, card.uid, target_id=target.id)
+    events = game.take_events()
+    types = [e["type"] for e in events]
+    assert types == ["shot", "hit"]
+    assert events[0]["source_id"] == shooter.id
+    assert events[0]["target_ids"] == [target.id]
+    assert events[0]["gatling"] is False
+    assert game.take_events() == []  # drained
+
+
+def test_gatling_and_death_events():
+    game = make_game(4)
+    shooter = game.turn_player
+    others = game._others_in_order(shooter)
+    start_play(game)
+    give(game, shooter, "gatling")
+    for p in others:
+        clear_hand(game, p)
+    others[0].hp = 1
+    game.take_events()
+    game.play_card(shooter.id, hand_uid(shooter, "gatling"))
+    events = game.take_events()
+    shot = next(e for e in events if e["type"] == "shot")
+    assert shot["gatling"] is True
+    assert shot["target_ids"] == [p.id for p in others]
+    assert any(e["type"] == "death" and e["player_id"] == others[0].id for e in events)

@@ -1,7 +1,21 @@
 import HealthBar from './HealthBar'
+import useLongPress from '../hooks/useLongPress'
 import { ROLE_LABELS } from '../constants'
 
-export default function PlayerArc({ players, targeting, eligibleIds, onTarget }) {
+// Equipment chip on a player: long-press shows the card's effect.
+export function MiniCard({ card, onPeek }) {
+  const press = useLongPress(
+    () => onPeek && onPeek(card),
+    () => onPeek && onPeek(null),
+  )
+  return (
+    <span className="mini-card" {...press.handlers}>
+      {card.name}
+    </span>
+  )
+}
+
+export default function PlayerArc({ players, targeting, eligibleIds, onTarget, onPeek }) {
   return (
     <div className="opponents">
       {players.map((p) => {
@@ -37,9 +51,7 @@ export default function PlayerArc({ players, targeting, eligibleIds, onTarget })
             {p.table.length > 0 && (
               <div className="mini-cards">
                 {p.table.map((c) => (
-                  <span key={c.uid} className="mini-card">
-                    {c.name}
-                  </span>
+                  <MiniCard key={c.uid} card={c} onPeek={onPeek} />
                 ))}
               </div>
             )}

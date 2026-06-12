@@ -2,7 +2,7 @@ import Card from './Card'
 
 // Modal shown when a reaction is expected. The responder gets action buttons;
 // for the general store every player sees the revealed cards.
-export default function ReactionModal({ state, send }) {
+export default function ReactionModal({ state, send, onPeek }) {
   const pending = state.pending
   const me = state.you
   const iRespond = pending.responder_id === me.id
@@ -129,6 +129,7 @@ export default function ReactionModal({ state, send }) {
             small
             disabled={!iRespond}
             onClick={() => send({ action: 'pick_store', card: card.uid })}
+            onPeek={onPeek}
           />
         ))}
       </div>

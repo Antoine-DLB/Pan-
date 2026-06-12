@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1200" preserveAspectRatio="xMidYMax slice">
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#26120c"/>
+      <stop offset="0.5" stop-color="#5c2a16"/>
+      <stop offset="0.78" stop-color="#a85423"/>
+      <stop offset="1" stop-color="#d98a3d"/>
+    </linearGradient>
+    <linearGradient id="ground" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#7c4a26"/>
+      <stop offset="1" stop-color="#311d0e"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="860" fill="url(#sky)"/>
+  <circle cx="400" cy="770" r="115" fill="#f2b04a" opacity="0.9"/>
+  <circle cx="400" cy="770" r="160" fill="#f2b04a" opacity="0.18"/>
+  <!-- distant mesas -->
+  <path d="M0 800 h90 l20 -70 h60 l18 70 h140 v60 H0 z" fill="#4a2413" opacity="0.9"/>
+  <path d="M520 805 l40 -90 h26 l36 90 h130 v55 H520 z" fill="#421f10" opacity="0.9"/>
+  <!-- ground dunes -->
+  <path d="M0 840 q200 -50 420 -10 q200 35 380 -8 V1200 H0 z" fill="url(#ground)"/>
+  <path d="M0 980 q240 -60 470 -16 q190 33 330 -10 V1200 H0 z" fill="#2e1a0d" opacity="0.6"/>
+  <!-- cactus, left -->
+  <g fill="#1d2a14" opacity="0.9">
+    <rect x="90" y="880" width="26" height="150" rx="13"/>
+    <rect x="56" y="900" width="20" height="62" rx="10"/>
+    <rect x="56" y="942" width="44" height="20" rx="10"/>
+    <rect x="124" y="922" width="20" height="52" rx="10"/>
+    <rect x="110" y="954" width="34" height="20" rx="10"/>
+  </g>
+  <!-- cactus, right -->
+  <g fill="#22301a" opacity="0.85">
+    <rect x="660" y="1006" width="20" height="104" rx="10"/>
+    <rect x="688" y="1028" width="16" height="42" rx="8"/>
+    <rect x="676" y="1054" width="28" height="16" rx="8"/>
+  </g>
+  <!-- shadows on the sand -->
+  <ellipse cx="520" cy="1120" rx="34" ry="12" fill="#241408" opacity="0.7"/>
+  <ellipse cx="260" cy="1160" rx="46" ry="14" fill="#241408" opacity="0.6"/>
+</svg>

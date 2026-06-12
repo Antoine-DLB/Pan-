@@ -13,10 +13,12 @@ export default function useGameSocket() {
   const [session, setSession] = useState(null)
   const [lobby, setLobby] = useState(null)
   const [gameState, setGameState] = useState(null)
+  const [events, setEvents] = useState(null) // {seq, list} — animations/sounds
   const [error, setError] = useState(null)
   const wsRef = useRef(null)
   const retryRef = useRef(0)
   const stoppedRef = useRef(false)
+  const eventSeqRef = useRef(0)
 
   const send = useCallback((payload) => {
     const ws = wsRef.current
@@ -54,6 +56,10 @@ export default function useGameSocket() {
             break
           case 'state':
             setGameState(msg.state)
+            if (msg.events && msg.events.length > 0) {
+              eventSeqRef.current += 1
+              setEvents({ seq: eventSeqRef.current, list: msg.events })
+            }
             break
           case 'error':
             setError(msg.message)
@@ -96,5 +102,5 @@ export default function useGameSocket() {
     window.location.reload()
   }, [])
 
-  return { connected, session, lobby, gameState, error, send, reset }
+  return { connected, session, lobby, gameState, events, error, send, reset }
 }
