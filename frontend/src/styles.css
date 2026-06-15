@@ -300,12 +300,26 @@ button {
 }
 
 .mini-card {
-  background: var(--blue-card);
-  color: #fff;
-  border-radius: 4px;
-  font-size: 0.6rem;
-  padding: 2px 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: #f0dfc0;
+  color: #3a2415;
+  border: 1px solid #8a5a33;
+  border-radius: 5px;
+  font-size: 0.62rem;
+  font-weight: 600;
+  padding: 1.5px 4px;
   cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.mini-card img {
+  width: 13px;
+  height: 13px;
+  pointer-events: none;
 }
 
 /* center board */
@@ -339,10 +353,17 @@ button {
 }
 
 .pile.deck {
-  background: #5a3b22;
-  border: 2px solid #00000055;
+  background: linear-gradient(160deg, #6b4423, #4a2d15);
+  border: 3px solid #8a5a33;
   color: var(--ink);
   font-weight: 700;
+}
+
+.pile.deck::before {
+  content: '★';
+  color: var(--accent);
+  font-size: 1.5rem;
+  line-height: 1;
 }
 
 .log-line {
@@ -402,23 +423,27 @@ button {
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
-  width: 88px;
-  height: 124px;
+  width: 92px;
+  height: 132px;
   border-radius: 10px;
-  padding: 6px;
+  padding: 5px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   cursor: pointer;
-  border: 2px solid #00000044;
   scroll-snap-align: start;
   user-select: none;
   position: relative;
   transition: transform 0.1s ease;
 }
 
-.card.brown { background: var(--brown-card); }
-.card.blue { background: var(--blue-card); }
+.card {
+  background: linear-gradient(160deg, #f6e8c8, #e8d2a4);
+  border: 3px solid #7a4a26;
+  color: #3a2415;
+  box-shadow: 0 2px 5px #00000055;
+}
+.card.blue { border-color: #44688a; }
 
 .card.selected {
   transform: translateY(-10px);
@@ -429,36 +454,41 @@ button {
 .card.disabled { opacity: 0.5; }
 
 .card .card-name {
+  background: #7a4a26;
+  color: #f6ead2;
+  border-radius: 6px;
+  padding: 3px 4px;
+  text-align: center;
   font-weight: 700;
-  font-size: 0.82rem;
-  line-height: 1.1;
-  color: #fff;
-  text-shadow: 0 1px 0 #00000066;
+  font-size: 0.72rem;
+  line-height: 1.05;
 }
+
+.card.blue .card-name { background: #44688a; }
 
 .card .card-range {
-  font-size: 0.65rem;
-  color: #ffffffcc;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #6b4423;
 }
+
+.card.blue .card-range { color: #44688a; }
 
 .card .card-corner {
-  align-self: flex-end;
   font-size: 0.8rem;
   font-weight: 700;
-  background: #ffffffe8;
-  border-radius: 5px;
-  padding: 1px 5px;
+  margin-left: auto;
 }
 
-.card .card-corner.red { color: #c0392b; }
-.card .card-corner.black { color: #1e272e; }
+.card .card-corner.red { color: #b03224; }
+.card .card-corner.black { color: #2f2418; }
 
 .card.small {
-  width: 64px;
-  height: 90px;
+  width: 70px;
+  height: 100px;
 }
 
-.card.small .card-name { font-size: 0.68rem; }
+.card.small .card-name { font-size: 0.58rem; padding: 2px 3px; }
 
 /* modal */
 
@@ -549,16 +579,15 @@ button {
 /* card artwork */
 
 .card-art {
-  width: 44px;
-  height: 44px;
+  width: 56px;
+  height: 56px;
   align-self: center;
-  color: #f6ead2;
-  filter: drop-shadow(0 1px 1px #00000066);
+  pointer-events: none;
 }
 
 .card.small .card-art {
-  width: 30px;
-  height: 30px;
+  width: 36px;
+  height: 36px;
 }
 
 .card .card-bottom {
@@ -636,16 +665,37 @@ button {
 
 .colt .gun {
   animation: recoil 0.35s ease;
-  transform-origin: 30% 60%;
+  transform-origin: 25% 70%;
 }
 
 .colt .flash {
   animation: flash 0.45s steps(2) infinite;
-  transform-origin: 72px 28px;
+  transform-origin: 110px 55px;
 }
 
 .colt.gatling .flash {
   animation: flash 0.12s steps(2) infinite;
+}
+
+.colt .smoke circle {
+  animation: smoke-rise 1s ease-out forwards;
+}
+
+.screen-flash {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 50% 45%, #fff3c455, transparent 65%);
+  animation: screen-flash 0.35s ease-out forwards;
+}
+
+@keyframes smoke-rise {
+  from { transform: translate(0, 0); opacity: 0.6; }
+  to { transform: translate(14px, -18px); opacity: 0; }
+}
+
+@keyframes screen-flash {
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
 
 .bang-text {

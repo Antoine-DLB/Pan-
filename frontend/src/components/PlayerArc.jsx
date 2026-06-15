@@ -1,5 +1,6 @@
 import HealthBar from './HealthBar'
 import useLongPress from '../hooks/useLongPress'
+import { CARD_ART } from './cardArt'
 import { ROLE_LABELS } from '../constants'
 
 // Equipment chip on a player: long-press shows the card's effect.
@@ -10,6 +11,7 @@ export function MiniCard({ card, onPeek }) {
   )
   return (
     <span className="mini-card" {...press.handlers}>
+      {CARD_ART[card.id] && <img src={CARD_ART[card.id]} alt="" draggable="false" />}
       {card.name}
     </span>
   )
