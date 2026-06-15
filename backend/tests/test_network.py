@@ -180,3 +180,41 @@ def test_actions_require_joining_first():
     with client.websocket_connect("/ws") as ws:
         ws.send_json({"action": "draw"})
         assert recv_until(ws, "error")
+
+
+def test_malformed_payloads_do_not_kill_the_connection():
+    client = TestClient(app)
+    with client.websocket_connect("/ws") as w0:
+        w0.send_json({"action": "create", "name": "Host"})
+        s0 = recv_until(w0, "session")
+        import contextlib
+
+        with contextlib.ExitStack() as stack:
+            for i in range(3):
+                w = stack.enter_context(client.websocket_connect("/ws"))
+                w.send_json({"action": "join", "code": s0["code"], "name": f"J{i}"})
+                recv_until(w, "session")
+            w0.send_json({"action": "start"})
+            recv_until(w0, "state")
+
+            bad_payloads = [
+                {"action": "play_card"},                     # missing card
+                {"action": "play_card", "card": "abc"},      # non-int card
+                {"action": "play_card", "card": None},
+                {"action": "discard", "cards": ["x", None]},
+                {"action": "discard", "cards": "notalist"},
+                {"action": "react", "react": "dodge", "card": "zz"},
+                {"action": "pick_store"},
+                "just a string",                             # not a dict
+                ["a", "list"],
+                42,
+                {"action": None},
+                {},
+            ]
+            for payload in bad_payloads:
+                w0.send_json(payload)
+                assert recv_until(w0, "error"), f"no error for {payload!r}"
+
+            # the connection must still be usable afterwards
+            w0.send_json({"action": "reconnect", "token": s0["token"]})
+            assert recv_until(w0, "session")

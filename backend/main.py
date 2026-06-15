@@ -124,6 +124,9 @@ async def websocket_endpoint(ws: WebSocket) -> None:
             except ValueError:
                 await _send(ws, {"type": "error", "message": "Message invalide."})
                 continue
+            if not isinstance(msg, dict):
+                await _send(ws, {"type": "error", "message": "Message invalide."})
+                continue
             action = msg.get("action")
             try:
                 if action == "create":
@@ -161,6 +164,10 @@ async def websocket_endpoint(ws: WebSocket) -> None:
                     await _broadcast_state(room)
             except GameError as exc:
                 await _send(ws, {"type": "error", "message": str(exc)})
+            except (KeyError, ValueError, TypeError):
+                # malformed payload (missing/badly typed fields) must never
+                # kill the connection
+                await _send(ws, {"type": "error", "message": "Message invalide."})
     except WebSocketDisconnect:
         pass
     finally:
